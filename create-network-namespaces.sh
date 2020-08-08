@@ -4,10 +4,9 @@ set -x
 sudo ip link add dev bridge_home type bridge
 sudo ip address add 10.0.0.1/24 dev bridge_home
 
-sudo iptables --append FORWARD --in-interface bridge_home --out-interface bridge_home --jump ACCEPT
-sudo iptables --append FORWARD --in-interface bridge_home --out-interface enp4s0 --jump ACCEPT
-sudo iptables --append FORWARD --in-interface enp4s0 --out-interface bridge_home --jump ACCEPT
-sudo iptables --append POSTROUTING --table nat --out-interface enp4s0 --jump MASQUERADE
+sudo iptables --append FORWARD --in-interface bridge_home --jump ACCEPT
+sudo iptables --append FORWARD --out-interface bridge_home --jump ACCEPT
+sudo iptables --append POSTROUTING --table nat --source 10.0.0.0/24 --jump MASQUERADE
 
 sudo ip netns add netns_dustin
 sudo mkdir -p /etc/netns/netns_dustin
